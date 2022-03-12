@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
-
+from django.contrib.auth.models import User
 from .models import Article
-from .serializers import ArticleSerializer
+from .serializers import ArticleSerializer, UserSerializer
 from django.http import JsonResponse, HttpResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
@@ -17,13 +17,21 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
-
 # Create your views here.
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    authentication_classes = [IsAuthenticated]
+
+    permission_classes = [IsAuthenticated]
+    authentication_classes = (TokenAuthentication,)
+
+
 """
 class ArticleViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin, mixins.DestroyModelMixin):
