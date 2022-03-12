@@ -9,9 +9,39 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.decorators import APIView
+from rest_framework import generics
+from rest_framework import mixins
 
 
 # Create your views here.
+
+class ArticleListView(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
+    def get(self, request):
+        return self.list(request)
+
+    def post(self, request):
+        return self.create(request)
+
+
+class ArticleDetails(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    lookup_field = 'id'
+
+    def get(self, request, id):
+        return self.retrieve(request, id=id)
+
+    def put(self, request, id):
+        return self.update(request, id=id)
+
+    def delete(self, request, id):
+        return self.destroy(request, id=id)
+
+""" 
+
 class ArticleListView(APIView):
     def get(self, request):
         articles = Article.objects.all()
@@ -51,7 +81,7 @@ class ArticleDetails(APIView):
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+"""
 
 '''
 
