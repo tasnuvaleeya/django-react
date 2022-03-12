@@ -13,6 +13,8 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
+from rest_framework.authentication import TokenAuthentication
+
 
 
 # Create your views here.
@@ -20,6 +22,7 @@ from django.shortcuts import get_object_or_404
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    authentication_classes = (TokenAuthentication,)
 """
 class ArticleViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,
                      mixins.UpdateModelMixin, mixins.DestroyModelMixin):
