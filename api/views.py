@@ -14,6 +14,8 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+
 from rest_framework.permissions import IsAuthenticated
 
 
